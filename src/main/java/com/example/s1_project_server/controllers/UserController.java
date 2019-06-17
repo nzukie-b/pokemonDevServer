@@ -30,9 +30,8 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public List<User> addUser(@RequestBody User newUser) {
-        ur.save(newUser);
-        return findAllUsers();
+    public User addUser(@RequestBody User newUser) {
+        return ur.save(newUser);
     }
 
     @PutMapping("/users/{userId}")
