@@ -49,4 +49,11 @@ public class UserController {
         ur.deleteById(userId);
         return findAllUsers();
     }
+
+    @GetMapping("/users/username/{username}/password/{password}")
+    public User findUserByCredentials(
+            @PathVariable("username") String username,
+            @PathVariable("password") String password) {
+        return ur.findUserByCredentials(username, password);
+    }
 }
