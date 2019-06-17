@@ -15,12 +15,12 @@ public class UserController {
     UserRepository ur;
 
 
-    @GetMapping("/users")
+    @GetMapping("/api/users")
     public List<User> findAllUsers() {
         return (List<User>) ur.findAll();
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/api/users/{userId}")
     public User fingUserById(@PathVariable("userId") long id) {
         if (ur.findById(id).isPresent()) {
             return ur.findById(id).get();
@@ -29,12 +29,12 @@ public class UserController {
         }
     }
 
-    @PostMapping("/users")
+    @PostMapping("/api/users")
     public User addUser(@RequestBody User newUser) {
         return ur.save(newUser);
     }
 
-    @PutMapping("/users/{userId}")
+    @PutMapping("/api/users/{userId}")
     public User updateUser(@PathVariable long userId,
                                  @RequestBody User user) {
         User u = ur.findById(userId).get();
@@ -43,13 +43,13 @@ public class UserController {
         return fingUserById(userId);
     }
 
-    @DeleteMapping("/users/{userId}")
+    @DeleteMapping("/api/users/{userId}")
     public List<User> deleteUser(@PathVariable long userId){
         ur.deleteById(userId);
         return findAllUsers();
     }
 
-    @GetMapping("/users/username/{username}/password/{password}")
+    @GetMapping("/api/users/username/{username}/password/{password}")
     public User findUserByCredentials(
             @PathVariable("username") String username,
             @PathVariable("password") String password) {
