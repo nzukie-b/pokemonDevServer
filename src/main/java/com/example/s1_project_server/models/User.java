@@ -3,6 +3,7 @@ package com.example.s1_project_server.models;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class User {
@@ -15,6 +16,16 @@ public class User {
     private String firstName;
     private String lastName;
     private String role;
+    @ManyToMany(mappedBy = "users")
+    private List<Pokemon> CollectedPokemon;
+
+    public List<Pokemon> getCollectedPokemon() {
+        return CollectedPokemon;
+    }
+
+    public void setCollectedPokemon(List<Pokemon> collectedPokemon) {
+        CollectedPokemon = collectedPokemon;
+    }
 
     public long getId() {
         return id;
