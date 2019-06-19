@@ -30,7 +30,7 @@ public class User {
 
 	@Enumerated(EnumType.STRING)
     @Column(length = 15)
-    private UserType role;
+    private UserRole role;
     @ManyToMany(mappedBy = "users")
     private List<Pokemon> CollectedPokemon;
 
@@ -95,11 +95,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public UserType getRole() {
+    public UserRole getRole() {
         return role;
     }
 
-    public void setRole(UserType role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 

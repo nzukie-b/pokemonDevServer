@@ -2,7 +2,7 @@ package com.example.s1_project_server.controllers;
 
 import com.example.s1_project_server.models.Pokemon;
 import com.example.s1_project_server.models.User;
-import com.example.s1_project_server.models.UserType;
+import com.example.s1_project_server.models.UserRole;
 import com.example.s1_project_server.repositories.PokemonRepository;
 import com.example.s1_project_server.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
