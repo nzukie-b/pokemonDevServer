@@ -16,11 +16,25 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
-    private String role;
+    
+    @OneToMany(mappedBy = "userId")
+    private List<TrainingPokemon> team;
+    
+    public List<TrainingPokemon> getTeam() {
+		return team;
+	}
+
+	public void setTeam(List<TrainingPokemon> team) {
+		this.team = team;
+	}
+
+	@Enumerated(EnumType.STRING)
+    @Column(length = 15)
+    private UserType role;
     @ManyToMany(mappedBy = "users")
     private List<Pokemon> CollectedPokemon;
 
-    public List<Pokemon> getCollectedPokemon() {
+	public List<Pokemon> getCollectedPokemon() {
         return CollectedPokemon;
     }
 
@@ -81,11 +95,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getRole() {
+    public UserType getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(UserType role) {
         this.role = role;
     }
 

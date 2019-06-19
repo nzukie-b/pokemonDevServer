@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 import java.util.*;
 
 @Entity
@@ -15,6 +18,10 @@ public class Pokemon {
     @ManyToMany
     @JsonIgnore
     private List<User> users;
+    
+    @OneToMany(mappedBy = "pokeId")
+    private List<TrainingPokemon> children;
+    
     
     public Pokemon() {
         super();
@@ -32,7 +39,7 @@ public class Pokemon {
         return getId() == pokemon.getId();
     }
 
-    @Override
+	@Override
     public int hashCode() {
         return Objects.hash(id);
     }

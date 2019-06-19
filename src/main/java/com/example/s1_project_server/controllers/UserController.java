@@ -2,10 +2,12 @@ package com.example.s1_project_server.controllers;
 
 import com.example.s1_project_server.models.Pokemon;
 import com.example.s1_project_server.models.User;
+import com.example.s1_project_server.models.UserType;
 import com.example.s1_project_server.repositories.PokemonRepository;
 import com.example.s1_project_server.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +73,7 @@ public class UserController {
 			pr.save(p);
 		}
 		ArrayList<Pokemon> newCollection = new ArrayList<Pokemon>(u.getCollectedPokemon());
-		
+
 		if (!newCollection.contains(p)) {
 			newCollection.add(p);
 			u.setCollectedPokemon(newCollection);
@@ -83,8 +85,33 @@ public class UserController {
 			p.setUsers(newCollection2);
 			pr.save(p);
 		}
-
 		return findUserById(userId);
 	}
 
+//	@PutMapping("/api/users/{userId}/pokemonTeam/{pokeId}")
+//	public User addPokemonToTeam(@PathVariable("userId") long userId, @PathVariable("pokeId") long pokeId) {
+//		User u = ur.findById(userId).get();
+//		if (u.getRole() == UserType.TRAINER) {
+//			Pokemon p = pr.findById(pokeId).get();
+//			if (u.getTeam().size() < 6) {
+//				p.setTrainer(u);
+//			}
+//		}
+//	}
+
+	public UserRepository getUr() {
+		return ur;
+	}
+
+	public void setUr(UserRepository ur) {
+		this.ur = ur;
+	}
+
+	public PokemonRepository getPr() {
+		return pr;
+	}
+
+	public void setPr(PokemonRepository pr) {
+		this.pr = pr;
+	}
 }
