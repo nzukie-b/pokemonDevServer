@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/api/users/{userId}")
-    public User fingUserById(@PathVariable("userId") long id) {
+    public User findUserById(@PathVariable("userId") long id) {
         if (ur.findById(id).isPresent()) {
             return ur.findById(id).get();
         } else {
@@ -46,7 +46,7 @@ public class UserController {
         User u = ur.findById(userId).get();
         u.setAll(user);
         ur.save(u);
-        return fingUserById(userId);
+        return findUserById(userId);
     }
 
     @DeleteMapping("/api/users/{userId}")
@@ -73,17 +73,17 @@ public class UserController {
             p = new Pokemon(pokeId);
             pr.save(p);
         }
-        ArrayList<Pokemon> newCollection = new ArrayList<>(u.getCollectedPokemon());
+        ArrayList<Pokemon> newCollection = new ArrayList<Pokemon>(u.getCollectedPokemon());
         newCollection.add(p);
         u.setCollectedPokemon(newCollection);
         System.out.println(newCollection);
         ur.save(u);
 
-        ArrayList<User> newCollection2 = new ArrayList<>(p.getUsers());
+        ArrayList<User> newCollection2 = new ArrayList<User>(p.getUsers());
         newCollection2.add(u);
         p.setUsers(newCollection2);
         pr.save(p);
 
-        return fingUserById(userId);
+        return findUserById(userId);
     }
 }

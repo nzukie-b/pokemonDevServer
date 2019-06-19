@@ -11,9 +11,11 @@ import java.util.*;
 public class Pokemon {
     @Id
     private long id;
+    
     @ManyToMany
     @JsonIgnore
     private List<User> users;
+    
     public Pokemon() {
         super();
     }
@@ -56,6 +58,9 @@ public class Pokemon {
     }
 
     public List<User> getUsers() {
+    	if (users == null) {
+    		return new ArrayList<User>();
+    	}
         return users;
     }
 
