@@ -103,7 +103,7 @@ public class UserController {
 			tp.setUserId(u);
 			trainingRepo.save(tp);
 		}
-		return u.getTeam();
+		return trainingRepo.findTeamByUserId(userId);
 	}
 
 	@DeleteMapping("/api/users/{userId}/team/{trainingPokeId}")
@@ -111,13 +111,13 @@ public class UserController {
 			@PathVariable("trainingPokeId") long trainingPokeId) {
 		User u = ur.findById(userId).get();
 		trainingRepo.deleteById(trainingPokeId);
-		return u.getTeam();
+		return trainingRepo.findTeamByUserId(userId);
 	}
 	
 	@GetMapping("/api/users/{userId}/team")
 	public List<TrainingPokemon> findAllTrainingPokemon(@PathVariable("userId") long userId) {
 		User u = ur.findById(userId).get();
-		return u.getTeam();
+		return trainingRepo.findTeamByUserId(userId);
 	}
 	
 	@GetMapping("/api/users/{userId}/team/{trainingPokeId}")
