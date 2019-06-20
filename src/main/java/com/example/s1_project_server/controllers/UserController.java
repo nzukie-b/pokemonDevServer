@@ -106,14 +106,11 @@ public class UserController {
 		return u.getTeam();
 	}
 
-	@DeleteMapping("/api/users/{userId}/team/{pokeId}")
+	@DeleteMapping("/api/users/{userId}/team/{trainingPokeId}")
 	public List<TrainingPokemon> deletePokemonFromTeam(@PathVariable("userId") long userId,
-			@PathVariable("pokeId") long pokeId) {
+			@PathVariable("trainingPokeId") long trainingPokeId) {
 		User u = ur.findById(userId).get();
-//		Pokemon p = pr.findById(pokeId).get();
-		TrainingPokemon tp = trainingRepo.findByUserAndPokemon(pokeId, userId);
-		trainingRepo.delete(tp);
-		u.getTeam().remove(tp);
+		trainingRepo.deleteById(trainingPokeId);
 		return u.getTeam();
 	}
 	
@@ -123,23 +120,25 @@ public class UserController {
 		return u.getTeam();
 	}
 	
-	@GetMapping("/api/users/{userId}/team/{pokeId}")
+	@GetMapping("/api/users/{userId}/team/{trainingPokeId}")
 	public TrainingPokemon findTrainingPokemonByUserAndPokemon(@PathVariable("userId") long userId,
-			@PathVariable("pokeId") long pokeId) {
-		TrainingPokemon tp = trainingRepo.findByUserAndPokemon(pokeId, userId);
-		return tp;
-	}
-	
-	@PutMapping("/api/users/{userId}/team/{pokeId}")
-	public TrainingPokemon updatePokemonOnTeam(@PathVariable("userId") long userId,
-			@PathVariable("pokeId") long pokeId, @RequestBody TrainingPokemon updatedPokemon) {
-		User u = ur.findById(userId).get();
-		if (u.getRole() == UserRole.TRAINER && u.getTeam().size() < 6) {
-			TrainingPokemon tp = trainingRepo.findByUserAndPokemon(pokeId, userId);
-			tp.setLevel(updatedPokemon.getLevel());
-			trainingRepo.save(tp);
-			return tp;
+			@PathVariable("trainingPokeId") long trainingPokeId) {
+		if (trainingRepo.existsById(trainingPokeId)) {
+			 return trainingRepo.findById(trainingPokeId).get();
 		}
 		return null;
+	}
+	
+	@PutMapping("/api/users/{userId}/team/{trainingPokeId}")
+	public List<TrainingPokemon> updatePokemonOnTeam(@PathVariable("userId") long userId,
+			@PathVariable("trainingPokeId") long trainingPokeId,
+			@RequestBody TrainingPokemon updatedPokemon) {
+		User u = ur.findById(userId).get();
+		if (u.getRole() == UserRole.TRAINER && u.getTeam().size() < 6) {
+			TrainingPokemon tp = trainingRepo.findById(trainingPokeId).get();
+			tp.setLevel(updatedPokemon.getLevel());
+			trainingRepo.save(tp);
+		}
+		return trainingRepo.findTeamByUserId(userId);
 	}
 }
