@@ -1,13 +1,14 @@
 package com.example.s1_project_server.controllers;
 
 import com.example.s1_project_server.models.Pokemon;
+import com.example.s1_project_server.models.TrainingPokemon;
 import com.example.s1_project_server.models.User;
 import com.example.s1_project_server.models.UserRole;
 import com.example.s1_project_server.repositories.PokemonRepository;
+import com.example.s1_project_server.repositories.TrainingPokemonRepository;
 import com.example.s1_project_server.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,9 @@ public class UserController {
 
 	@Autowired
 	PokemonRepository pr;
+
+	@Autowired
+	TrainingPokemonRepository trainingRepo;
 
 	@GetMapping("/api/users")
 	public List<User> findAllUsers() {
@@ -88,30 +92,54 @@ public class UserController {
 		return findUserById(userId);
 	}
 
-//	@PutMapping("/api/users/{userId}/pokemonTeam/{pokeId}")
-//	public User addPokemonToTeam(@PathVariable("userId") long userId, @PathVariable("pokeId") long pokeId) {
-//		User u = ur.findById(userId).get();
-//		if (u.getRole() == UserType.TRAINER) {
-//			Pokemon p = pr.findById(pokeId).get();
-//			if (u.getTeam().size() < 6) {
-//				p.setTrainer(u);
-//			}
-//		}
-//	}
-
-	public UserRepository getUr() {
-		return ur;
+	@PostMapping("/api/users/{userId}/team/{pokeId}")
+	public List<TrainingPokemon> addPokemonToTeam(@PathVariable("userId") long userId,
+			@PathVariable("pokeId") long pokeId) {
+		User u = ur.findById(userId).get();
+		if (u.getRole() == UserRole.TRAINER && u.getTeam().size() < 6) {
+			Pokemon p = pr.findById(pokeId).get();
+			TrainingPokemon tp = new TrainingPokemon();
+			tp.setPokeId(p);
+			tp.setUserId(u);
+			trainingRepo.save(tp);
+		}
+		return u.getTeam();
 	}
 
-	public void setUr(UserRepository ur) {
-		this.ur = ur;
+	@DeleteMapping("/api/users/{userId}/team/{pokeId}")
+	public List<TrainingPokemon> deletePokemonFromTeam(@PathVariable("userId") long userId,
+			@PathVariable("pokeId") long pokeId) {
+		User u = ur.findById(userId).get();
+//		Pokemon p = pr.findById(pokeId).get();
+		TrainingPokemon tp = trainingRepo.findByUserAndPokemon(pokeId, userId);
+		trainingRepo.delete(tp);
+		u.getTeam().remove(tp);
+		return u.getTeam();
 	}
-
-	public PokemonRepository getPr() {
-		return pr;
+	
+	@GetMapping("/api/users/{userId}/team")
+	public List<TrainingPokemon> findAllTrainingPokemon(@PathVariable("userId") long userId) {
+		User u = ur.findById(userId).get();
+		return u.getTeam();
 	}
-
-	public void setPr(PokemonRepository pr) {
-		this.pr = pr;
+	
+	@GetMapping("/api/users/{userId}/team/{pokeId}")
+	public TrainingPokemon findTrainingPokemonByUserAndPokemon(@PathVariable("userId") long userId,
+			@PathVariable("pokeId") long pokeId) {
+		TrainingPokemon tp = trainingRepo.findByUserAndPokemon(pokeId, userId);
+		return tp;
+	}
+	
+	@PutMapping("/api/users/{userId}/team/{pokeId}")
+	public TrainingPokemon updatePokemonOnTeam(@PathVariable("userId") long userId,
+			@PathVariable("pokeId") long pokeId, @RequestBody TrainingPokemon updatedPokemon) {
+		User u = ur.findById(userId).get();
+		if (u.getRole() == UserRole.TRAINER && u.getTeam().size() < 6) {
+			TrainingPokemon tp = trainingRepo.findByUserAndPokemon(pokeId, userId);
+			tp.setLevel(updatedPokemon.getLevel());
+			trainingRepo.save(tp);
+			return tp;
+		}
+		return null;
 	}
 }

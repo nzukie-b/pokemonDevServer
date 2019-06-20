@@ -2,6 +2,8 @@ package com.example.s1_project_server.models;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class TrainingPokemon {
 	
@@ -14,6 +16,14 @@ public class TrainingPokemon {
 	
 	private int level;
 	
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -39,6 +49,7 @@ public class TrainingPokemon {
 	}
 
 	@ManyToOne
+	@JsonIgnore
 	private User userId;
 	
 
