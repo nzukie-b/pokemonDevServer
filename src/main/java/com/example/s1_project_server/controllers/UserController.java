@@ -60,5 +60,10 @@ public class UserController {
 			@PathVariable("password") String password) {
 		return ur.findUserByCredentials(username, password);
 	}
+	
+	@GetMapping("/api/users/username/{username}")
+	public User findUserByUsername(@PathVariable("username") String username) {
+		return ur.findUserByUsername(username);
+	}
 
 }
