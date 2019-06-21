@@ -71,5 +71,4 @@ public class TrainingPokemonController {
 		}
 		return trainingRepo.findTeamByUserId(userId);
 	}
-
 }
