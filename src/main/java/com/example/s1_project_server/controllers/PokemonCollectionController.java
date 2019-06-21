@@ -25,14 +25,18 @@ public class PokemonCollectionController {
 	TrainingPokemonRepository trainingRepo;
 
 	@PutMapping("/api/users/{userId}/pokemon/{pokeId}")
-	public User addPokemonToCollection(@PathVariable(name = "userId") long userId,
-			@PathVariable(name = "pokeId") long pokeId) {
+	public User addPokemonToCollection(
+			@PathVariable(name = "userId") long userId,
+			@PathVariable(name = "pokeId") long pokeId,
+			@RequestBody Pokemon poke) {
 		User u = ur.findById(userId).get();
 		Pokemon p;
 		if (pr.findById(pokeId).isPresent()) {
 			p = pr.findById(pokeId).get();
 		} else {
 			p = new Pokemon(pokeId);
+			p.setFrontSprite(poke.getFrontSprite());
+			p.setName(poke.getName());
 			pr.save(p);
 		}
 		ArrayList<Pokemon> newCollection = new ArrayList<Pokemon>(u.getCollectedPokemon());
