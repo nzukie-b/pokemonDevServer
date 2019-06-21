@@ -7,6 +7,7 @@ import com.example.s1_project_server.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -38,6 +39,8 @@ public class UserController {
 
 	@PostMapping("/api/users")
 	public User addUser(@RequestBody User newUser) {
+		newUser.setCollectedPokemon(new ArrayList<>());
+		newUser.setTeam(new ArrayList<>());
 		return ur.save(newUser);
 	}
 
