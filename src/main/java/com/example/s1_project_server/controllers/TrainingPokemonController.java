@@ -64,7 +64,7 @@ public class TrainingPokemonController {
 	public List<TrainingPokemon> updatePokemonOnTeam(@PathVariable("userId") long userId,
 			@PathVariable("trainingPokeId") long trainingPokeId, @RequestBody TrainingPokemon updatedPokemon) {
 		User u = ur.findById(userId).get();
-		if (u.getRole() == UserRole.TRAINER && u.getTeam().size() < 6) {
+		if (u.getRole() == UserRole.TRAINER && u.getTeam().size() <= 6) {
 			TrainingPokemon tp = trainingRepo.findById(trainingPokeId).get();
 			tp.setLevel(updatedPokemon.getLevel());
 			trainingRepo.save(tp);
