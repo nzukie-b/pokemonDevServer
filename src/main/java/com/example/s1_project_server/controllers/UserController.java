@@ -61,9 +61,10 @@ public class UserController {
 		return findAllUsers();
 	}
 
-	@GetMapping("/api/users/username/{username}/password/{password}")
-	public User findUserByCredentials(@PathVariable("username") String username,
-			@PathVariable("password") String password) {
+	@PostMapping("/api/login")
+	public User findUserByCredentials(@RequestBody User user) {
+		String username = user.getUsername();
+		String password = user.getPassword();
 		return ur.findUserByCredentials(username, password);
 	}
 	
