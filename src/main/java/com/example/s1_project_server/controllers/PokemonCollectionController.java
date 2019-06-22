@@ -24,6 +24,7 @@ public class PokemonCollectionController {
 	@Autowired
 	TrainingPokemonRepository trainingRepo;
 
+	@PostMapping("/api/users/{userId}/pokemon/{pokeId}")
 	@PutMapping("/api/users/{userId}/pokemon/{pokeId}")
 	public User addPokemonToCollection(
 			@PathVariable(name = "userId") long userId,
