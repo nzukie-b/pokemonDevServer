@@ -1,5 +1,7 @@
 package com.example.s1_project_server.controllers;
 
+import com.example.s1_project_server.models.Pokemon;
+import com.example.s1_project_server.models.TrainingPokemon;
 import com.example.s1_project_server.models.User;
 import com.example.s1_project_server.repositories.PokemonRepository;
 import com.example.s1_project_server.repositories.TrainingPokemonRepository;
@@ -39,17 +41,18 @@ public class UserController {
 
 	@PostMapping("/api/users")
 	public User addUser(@RequestBody User newUser) {
-		newUser.setCollectedPokemon(new ArrayList<>());
-		newUser.setTeam(new ArrayList<>());
+		newUser.setCollectedPokemon(new ArrayList<Pokemon>());
+		newUser.setTeam(new ArrayList<TrainingPokemon>());
 		return ur.save(newUser);
 	}
+	
 
 	@PutMapping("/api/users/{userId}")
 	public User updateUser(@PathVariable long userId, @RequestBody User user) {
 		User u = ur.findById(userId).get();
 		u.setAll(user);
 		ur.save(u);
-		return findUserById(userId);
+		return findUserById(userId);	
 	}
 
 	@DeleteMapping("/api/users/{userId}")
