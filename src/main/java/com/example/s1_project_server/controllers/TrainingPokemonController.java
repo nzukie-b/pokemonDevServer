@@ -73,12 +73,20 @@ public class TrainingPokemonController {
         return trainingRepo.findTeamByUserId(userId);
     }
 
-    @GetMapping("/api/users/pokemon/{pokemonId}")
-    public List<TrainingPokemon> findPokemonInCollectionIrellevantOfUsers(@PathVariable(name = "pokemonId") String pokeId) {
-        if (!(pr.findPokemonByName(pokeId).size() > 0)) {
+    @GetMapping("/api/users/pokemon/name/{pokemonName}")
+    public List<TrainingPokemon> findPokemonInCollectionIrellevantOfUsers(@PathVariable(name = "pokemonName") String pokeName) {
+        if (!(pr.findPokemonByName(pokeName).size() > 0)) {
 			return new ArrayList<>();
         } else {
-           return pr.findPokemonByName(pokeId).get(0).getChildren();
+           return pr.findPokemonByName(pokeName).get(0).getChildren();
+        }
+    }
+    @GetMapping("/api/users/pokemon/id/{pokemonId}")
+    public List<TrainingPokemon> findPokemonIdInCollectionIrellevantOfUsers(@PathVariable(name = "pokemonId") long pokeId) {
+        if (!(pr.findById(pokeId).isPresent())) {
+            return new ArrayList<>();
+        } else {
+            return pr.findById(pokeId).get().getChildren();
         }
     }
 }
