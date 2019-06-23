@@ -25,6 +25,14 @@ public class PokemonCollectionController {
 	TrainingPokemonRepository trainingRepo;
 
 	@PostMapping("/api/users/{userId}/pokemon/{pokeId}")
+	public User createPokemonToCollection(
+			@PathVariable(name = "userId") long userId,
+			@PathVariable(name = "pokeId") long pokeId,
+			@RequestBody Pokemon poke) {
+			return this.addPokemonToCollection(userId, pokeId, poke);
+	}
+	
+	
 	@PutMapping("/api/users/{userId}/pokemon/{pokeId}")
 	public User addPokemonToCollection(
 			@PathVariable(name = "userId") long userId,
